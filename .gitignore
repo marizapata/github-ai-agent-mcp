@@ -1,0 +1,16 @@
+
+# Dependencias instaladas
+node_modules/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Archivos compilados
+dist/
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.vscode/

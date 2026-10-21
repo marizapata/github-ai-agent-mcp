@@ -1,0 +1,19 @@
+{
+  "name": "github-ai-agent-mcp",
+  "version": "1.0.0",
+  "description": "Servidor MCP para interactuar con GitHub mediante herramientas de IA",
+  "main": "dist/index.js",
+  "scripts": {},
+  "keywords": [
+    "mcp",
+    "github",
+    "ai-agent"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
