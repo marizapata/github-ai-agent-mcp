@@ -1,5 +1,7 @@
+
 // Definición de la herramienta MCP para crear incidencias
 import { createIssueSchema } from "../schemas/issue.schema.js";
+import { createIssue } from "../clients/github/operations.js";
 
 // Información y comportamiento de la herramienta
 export const createIssueTool = {
@@ -10,15 +12,27 @@ export const createIssueTool = {
   description:
     "Crea una incidencia en un repositorio de GitHub con un título y una descripción opcional.",
 
-  // Función que recibe los datos y valida que sean correctos
+  // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown) => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = createIssueSchema.parse(input);
 
-    // Devolvemos los datos validados mientras construimos la herramienta
-    // La operación real de GitHub se implementará en el Hito 4
+    // Creamos la incidencia real en GitHub
+    const issue = await createIssue(
+      data.owner,
+      data.repo,
+      data.title,
+      data.body
+    );
+
+    // Devolvemos la información de la incidencia creada
     return {
-      message: `Los datos para crear el issue "${data.title}" son válidos.`,
+      message: `Incidencia creada correctamente.
+
+Número: #${issue.number}
+Título: ${issue.title}
+Estado: ${issue.state}
+URL: ${issue.html_url}`,
     };
   },
 };

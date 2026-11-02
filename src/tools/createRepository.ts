@@ -1,5 +1,7 @@
+
 // Definición de la herramienta MCP para crear repositorios
 import { createRepositorySchema } from "../schemas/repository.schema.js";
+import { createRepository } from "../clients/github/operations.js";
 
 // Información y comportamiento de la herramienta
 export const createRepositoryTool = {
@@ -10,15 +12,28 @@ export const createRepositoryTool = {
   description:
     "Crea un nuevo repositorio en GitHub con un nombre y una descripción opcional.",
 
-  // Función que recibe los datos y valida que sean correctos
+  // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown) => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = createRepositorySchema.parse(input);
 
-    // Devolvemos los datos validados mientras construimos la herramienta
-    // La operación real de GitHub se implementará en el Hito 4
+    // Creamos el repositorio real en GitHub
+    const repository = await createRepository(
+      data.name,
+      data.description
+    );
+
+    // Identificamos si el repositorio es público o privado
+    const visibility = repository.private ? "Privado" : "Público";
+
+    // Devolvemos la información del repositorio creado
     return {
-      message: `Los datos para crear el repositorio "${data.name}" son válidos.`,
+      message: `Repositorio creado correctamente.
+
+Nombre: ${repository.full_name}
+Visibilidad: ${visibility}
+Descripción: ${repository.description ?? "Sin descripción"}
+URL: ${repository.html_url}`,
     };
   },
 };

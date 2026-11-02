@@ -1,5 +1,7 @@
-// Definición de la herramienta MCP para crear un commit
+
+// Definición de la herramienta MCP para crear commits
 import { createCommitSchema } from "../schemas/create-commit.schema.js";
+import { createCommit } from "../clients/github/operations.js";
 
 // Información y comportamiento de la herramienta
 export const createCommitTool = {
@@ -10,15 +12,27 @@ export const createCommitTool = {
   description:
     "Crea un commit para agregar o modificar un archivo en un repositorio de GitHub.",
 
-  // Función que recibe los datos y valida que sean correctos
+  // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown) => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = createCommitSchema.parse(input);
 
-    // Devolvemos los datos validados mientras construimos la herramienta
-    // La operación real de GitHub se implementará en el Hito 4
+    // Creamos el commit real en GitHub
+    const commit = await createCommit(
+      data.owner,
+      data.repo,
+      data.message,
+      data.path,
+      data.content
+    );
+
+    // Devolvemos la información principal del commit
     return {
-      message: `Los datos para crear el commit "${data.message}" son válidos.`,
+      message: `Commit creado correctamente.
+
+Archivo: ${commit.path}
+SHA: ${commit.sha}
+URL: ${commit.url}`,
     };
   },
 };

@@ -1,5 +1,7 @@
+
 // Definición de la herramienta MCP para listar incidencias
 import { listIssuesSchema } from "../schemas/list-issues.schema.js";
+import { listIssues } from "../clients/github/operations.js";
 
 // Información y comportamiento de la herramienta
 export const listIssuesTool = {
@@ -10,15 +12,39 @@ export const listIssuesTool = {
   description:
     "Lista las incidencias abiertas de un repositorio de GitHub.",
 
-  // Función que recibe los datos y valida que sean correctos
+  // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown) => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = listIssuesSchema.parse(input);
 
-    // Devolvemos los datos validados mientras construimos la herramienta
-    // La consulta real a GitHub se implementará en el Hito 4
+    // Consultamos las incidencias reales del repositorio en GitHub
+    const issues = await listIssues(data.owner, data.repo);
+
+    // Comprobamos si existen incidencias abiertas
+    if (issues.length === 0) {
+      return {
+        message: `No se encontraron incidencias abiertas en ${data.owner}/${data.repo}.`,
+      };
+    }
+
+    // Organizamos la información de las incidencias
+    const issueList = issues
+      .map((issue) => {
+        const labels =
+          issue.labels.length > 0
+            ? issue.labels.join(", ")
+            : "Sin etiquetas";
+
+        return `- #${issue.number}: ${issue.title}
+  Estado: ${issue.state}
+  Etiquetas: ${labels}
+  URL: ${issue.html_url}`;
+      })
+      .join("\n\n");
+
+    // Devolvemos las incidencias encontradas
     return {
-      message: `Los datos para listar las incidencias de ${data.owner}/${data.repo} son válidos.`,
+      message: `Se encontraron ${issues.length} incidencias abiertas en ${data.owner}/${data.repo}:\n\n${issueList}`,
     };
   },
 };

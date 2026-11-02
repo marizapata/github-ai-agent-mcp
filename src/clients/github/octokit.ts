@@ -12,5 +12,10 @@ export function createOctokit() {
   return new Octokit({
     auth: env.GITHUB_TOKEN,
     userAgent: "github-ai-agent-mcp/1.0",
+    request: {
+      headers: {
+        "X-GitHub-Api-Version": "2026-03-10",
+      },
+    },
   });
 }
