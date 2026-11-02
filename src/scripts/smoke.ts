@@ -22,5 +22,5 @@ main().catch((error: unknown) => {
     error instanceof Error ? error.message : "Error desconocido"
   );
 
-  process.exit(1);
+  process.exitCode = 1;
 });

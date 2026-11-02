@@ -1,19 +1,24 @@
 
 import { createOctokit } from "./octokit.js";
 
+// Importamos la función para controlar los reintentos
+import { withRetry } from "../../utils/retry.js";
+
 // Listamos los repositorios del usuario autenticado en GitHub
 export async function listRepositories() {
   // Creamos el cliente autenticado de GitHub
   const octokit = createOctokit();
 
   // Consultamos todos los repositorios a los que tiene acceso el usuario
-  const repositories = await octokit.paginate(
+  const repositories = await withRetry(() =>
+  octokit.paginate(
     octokit.rest.repos.listForAuthenticatedUser,
     {
       per_page: 100,
       sort: "updated",
     }
-  );
+  )
+);
 
   // Seleccionamos la información que necesitamos de cada repositorio
   return repositories.map((repository) => ({
@@ -32,7 +37,8 @@ export async function listIssues(owner: string, repo: string) {
   const octokit = createOctokit();
 
   // Consultamos las incidencias abiertas del repositorio
-  const issues = await octokit.paginate(
+  const issues = await withRetry(() =>
+  octokit.paginate(
     octokit.rest.issues.listForRepo,
     {
       owner,
@@ -40,7 +46,8 @@ export async function listIssues(owner: string, repo: string) {
       state: "open",
       per_page: 100,
     }
-  );
+  )
+);
 
   // Excluimos los pull requests, porque GitHub los incluye
   // en la respuesta de este endpoint
