@@ -1,13 +1,16 @@
+
 {
   "name": "github-ai-agent-mcp",
   "version": "1.0.0",
   "description": "Servidor MCP para interactuar con GitHub mediante herramientas de IA",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [
     "mcp",
@@ -16,6 +19,9 @@
   ],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=22.19"
+  },
   "devDependencies": {
     "@types/node": "^26.6.5",
     "tsx": "^4.23.15",
@@ -25,6 +31,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.2",
     "@octokit/rest": "^22.0.1",
-    "dotenv": "^18.0.9"
+    "dotenv": "^18.0.9",
+    "zod": "^4.6.7"
   }
 }
+
