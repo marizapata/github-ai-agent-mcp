@@ -2,6 +2,7 @@
 // Definición de la herramienta MCP para listar incidencias
 import { listIssuesSchema } from "../schemas/list-issues.schema.js";
 import { listIssues } from "../clients/github/operations.js";
+import type { ToolResponseDTO } from "../types.js";
 
 // Información y comportamiento de la herramienta
 export const listIssuesTool = {
@@ -13,7 +14,7 @@ export const listIssuesTool = {
     "Lista las incidencias abiertas de un repositorio de GitHub.",
 
   // Función que recibe los datos y ejecuta la operación
-  execute: async (input: unknown) => {
+  execute: async (input: unknown): Promise<ToolResponseDTO> => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = listIssuesSchema.parse(input);
 

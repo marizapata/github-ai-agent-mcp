@@ -2,6 +2,7 @@
 // Definición de la herramienta MCP para crear incidencias
 import { createIssueSchema } from "../schemas/issue.schema.js";
 import { createIssue } from "../clients/github/operations.js";
+import type { ToolResponseDTO } from "../types.js";
 
 // Información y comportamiento de la herramienta
 export const createIssueTool = {
@@ -13,7 +14,7 @@ export const createIssueTool = {
     "Crea una incidencia en un repositorio de GitHub con un título y una descripción opcional.",
 
   // Función que recibe los datos y ejecuta la operación
-  execute: async (input: unknown) => {
+  execute: async (input: unknown): Promise<ToolResponseDTO> => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = createIssueSchema.parse(input);
 

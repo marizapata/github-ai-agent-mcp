@@ -21,10 +21,13 @@ import { createCommitSchema } from "./schemas/create-commit.schema.js";
 import { normalizeError } from "./errors/index.js";
 import { logError } from "./utils/logging.js";
 
+// Importamos los tipos de datos
+import type { ToolResponseDTO } from "./types.js";
+
 // Ejecutamos las herramientas y manejamos sus posibles errores
 async function executeTool(
   toolName: string,
-  operation: () => Promise<{ message: string }>
+  operation: () => Promise<ToolResponseDTO>
 ) {
   try {
     // Ejecutamos la operación de la herramienta

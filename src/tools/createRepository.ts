@@ -2,6 +2,7 @@
 // Definición de la herramienta MCP para crear repositorios
 import { createRepositorySchema } from "../schemas/repository.schema.js";
 import { createRepository } from "../clients/github/operations.js";
+import type { ToolResponseDTO } from "../types.js";
 
 // Información y comportamiento de la herramienta
 export const createRepositoryTool = {
@@ -13,7 +14,7 @@ export const createRepositoryTool = {
     "Crea un nuevo repositorio en GitHub con un nombre y una descripción opcional.",
 
   // Función que recibe los datos y ejecuta la operación
-  execute: async (input: unknown) => {
+  execute: async (input: unknown): Promise<ToolResponseDTO> => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     const data = createRepositorySchema.parse(input);
 

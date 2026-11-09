@@ -2,6 +2,7 @@
 // Definición de la herramienta MCP para listar repositorios
 import { listRepositoriesSchema } from "../schemas/list-repositories.schema.js";
 import { listRepositories } from "../clients/github/operations.js";
+import type { ToolResponseDTO } from "../types.js";
 
 // Información y comportamiento de la herramienta
 export const listRepositoriesTool = {
@@ -12,7 +13,7 @@ export const listRepositoriesTool = {
   description: "Lista los repositorios del usuario autenticado en GitHub.",
 
   // Función que recibe los datos y ejecuta la operación
-  execute: async (input: unknown) => {
+  execute: async (input: unknown): Promise<ToolResponseDTO> => {
     // Validamos los datos recibidos utilizando el esquema de Zod
     listRepositoriesSchema.parse(input);
 
