@@ -12,10 +12,13 @@ import { createIssueTool } from "./tools/createIssue.js";
 import { createCommitTool } from "./tools/createCommit.js";
 
 // Importamos los esquemas para validar los datos
-import { listIssuesSchema } from "./schemas/list-issues.schema.js";
-import { createRepositorySchema } from "./schemas/repository.schema.js";
-import { createIssueSchema } from "./schemas/issue.schema.js";
-import { createCommitSchema } from "./schemas/create-commit.schema.js";
+import {
+  listRepositoriesSchema,
+  listIssuesSchema,
+  createRepositorySchema,
+  createIssueSchema,
+  createCommitSchema,
+} from "./schemas/index.js";
 
 // Importamos las funciones para manejar los errores
 import { normalizeError } from "./errors/index.js";
@@ -87,7 +90,7 @@ export function createMcpServer() {
     listRepositoriesTool.name,
     {
       description: listRepositoriesTool.description,
-      inputSchema: {},
+      inputSchema: listRepositoriesSchema.shape,
     },
     async (args) =>
       executeTool(

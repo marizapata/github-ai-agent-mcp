@@ -10,10 +10,12 @@ export const createRepositorySchema = z.object({
     .regex(
       /^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/,
       "El nombre solo puede contener letras, números y guiones, sin guiones al inicio, al final ni consecutivos"
-    ),
+    )
+    .describe("Nombre del nuevo repositorio de GitHub"),
 
   description: z
     .string()
     .max(500, "La descripción no puede superar los 500 caracteres")
-    .optional(),
+    .optional()
+    .describe("Descripción del propósito del repositorio (opcional)"),
 });

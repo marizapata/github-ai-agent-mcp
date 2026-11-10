@@ -1,6 +1,7 @@
 
 import { createOctokit } from "./octokit.js";
 import { withRetry } from "../../utils/retry.js";
+import type { ListRepositoriesInput } from "../../schemas/list-repositories.schema.js";
 
 import type {
   RepositoryDTO,
@@ -9,16 +10,25 @@ import type {
   CommitDTO,
 } from "../../types.js";
 
+
+
 // Listamos los repositorios del usuario autenticado en GitHub
-export async function listRepositories(): Promise<RepositoryDTO[]> {
+export async function listRepositories(
+  options: ListRepositoriesInput = {
+    type: "all",
+    sort: "updated",
+    per_page: 30,
+  }
+): Promise<RepositoryDTO[]> {
   const octokit = createOctokit();
 
   const repositories = await withRetry(() =>
     octokit.paginate(
       octokit.rest.repos.listForAuthenticatedUser,
       {
-        per_page: 100,
-        sort: "updated",
+        type: options.type,
+        sort: options.sort,
+        per_page: options.per_page,
       }
     )
   );

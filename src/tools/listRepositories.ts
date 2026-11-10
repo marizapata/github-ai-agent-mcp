@@ -15,10 +15,10 @@ export const listRepositoriesTool = {
   // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown): Promise<ToolResponseDTO> => {
     // Validamos los datos recibidos utilizando el esquema de Zod
-    listRepositoriesSchema.parse(input);
+    const options = listRepositoriesSchema.parse(input);
 
     // Consultamos los repositorios reales de GitHub
-    const repositories = await listRepositories();
+    const repositories = await listRepositories(options);
 
     // Comprobamos si el usuario tiene repositorios disponibles
     if (repositories.length === 0) {

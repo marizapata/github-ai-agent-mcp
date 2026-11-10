@@ -11,7 +11,7 @@ export const listIssuesTool = {
 
   // Descripción que ayuda al LLM a identificar cuándo utilizarla
   description:
-    "Lista las incidencias abiertas de un repositorio de GitHub.",
+  "Consulta y devuelve las incidencias abiertas de un repositorio específico de GitHub. Requiere el nombre del propietario (owner) y del repositorio (repo). Excluye los Pull Requests y muestra el número, título, estado, etiquetas y URL de cada incidencia.",
 
   // Función que recibe los datos y ejecuta la operación
   execute: async (input: unknown): Promise<ToolResponseDTO> => {
